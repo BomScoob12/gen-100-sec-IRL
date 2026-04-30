@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The 100-Second Real Life</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap");
+
+      body {
+        font-family: "Kanit", sans-serif;
+        background-color: #f8fafc; /* Slate 50 */
+        color: #1e293b; /* Slate 800 */
+        overflow: hidden;
+        touch-action: manipulation;
+      }
+
+      /* FIBO Building Grid Pattern */
+      .bg-grid {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(148, 163, 184, 0.15) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(148, 163, 184, 0.15) 1px,
+            transparent 1px
+          );
+        background-size: 40px 40px;
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+      }
+
+      /* Animations */
+      @keyframes pulse-save {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+        }
+        50% {
+          transform: scale(1.02);
+          box-shadow: 0 0 20px 10px rgba(6, 182, 212, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+        }
+      }
+
+      .animate-pulse-save {
+        animation: pulse-save 0.5s ease-out;
+      }
+
+      @keyframes shake-spend {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-5px);
+        }
+        40%,
+        80% {
+          transform: translateX(5px);
+        }
+      }
+
+      .animate-shake-spend {
+        animation: shake-spend 0.4s ease-in-out;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fade-in 1.5s ease-out forwards;
+      }
+
+      .progress-bar {
+        transition:
+          width 0.1s linear,
+          background-color 0.3s;
+      }
+
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+      }
+    </style>
+  </head>
+  <body
+    class="h-screen w-full flex flex-col items-center justify-center relative"
+  >
+    <div class="bg-grid"></div>
+
+    <!-- App Container -->
+    <div
+      id="app"
+      class="w-full max-w-md h-full sm:h-[85vh] sm:rounded-[2rem] shadow-2xl glass-panel relative flex flex-col overflow-hidden transition-transform duration-300"
+    >
+      <!-- Header / Status -->
+      <div
+        id="header"
+        class="p-6 border-b border-slate-200 flex justify-between items-center bg-white/50 hidden"
+      >
+        <div class="flex flex-col">
+          <span
+            class="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1"
+            >Balance</span
+          >
+          <span
+            id="balance-display"
+            class="text-2xl font-bold text-slate-800 transition-colors duration-300"
+            >฿30,000</span
+          >
+        </div>
+        <div
+          id="level-badge"
+          class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm font-semibold border border-slate-200 shadow-sm"
+        >
+          Level 1/5
+        </div>
+      </div>
+
+      <!-- Timer Bar -->
+      <div id="timer-container" class="w-full h-1.5 bg-slate-200 hidden">
+        <div
+          id="timer-bar"
+          class="h-full bg-cyan-500 progress-bar w-full rounded-r-full"
+        ></div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div
+        id="content"
+        class="flex-1 flex flex-col justify-center p-6 relative overflow-hidden"
+      >
+        <!-- Start Screen -->
+        <div
+          id="screen-start"
+          class="text-center flex flex-col items-center justify-center h-full"
+        >
+          <div
+            class="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mb-6 shadow-inner"
+          >
+            <i data-lucide="building-2" class="w-10 h-10 text-slate-800"></i>
+          </div>
+          <h1 class="text-3xl font-bold text-slate-800 mb-3 tracking-tight">
+            The 100-Second<br />Real Life
+          </h1>
+          <p class="text-slate-500 mb-8 max-w-[280px] leading-relaxed">
+            ทุกการตัดสินใจคืออิฐแต่ละก้อนที่สร้างตึกชีวิตของคุณ
+          </p>
+          <div
+            class="p-5 bg-white rounded-2xl border border-slate-200 w-full mb-8 shadow-sm"
+          >
+            <p
+              class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1"
+            >
+              Starting Balance
+            </p>
+            <p class="text-3xl font-bold text-cyan-600">฿30,000</p>
+          </div>
+          <button
+            onclick="startGame()"
+            class="w-full py-4 rounded-xl bg-slate-800 text-white font-semibold text-lg hover:bg-slate-700 transition-all active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center gap-2 mt-auto sm:mt-0"
+          >
+            เริ่มสร้างตึก
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+          <p class="mt-6 text-slate-400 text-xs sm:hidden">
+            web created by <span class="text-cyan-600 font-bold">bomscoob</span>
+          </p>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="screen-game" class="hidden flex flex-col h-full">
+          <div class="text-center mt-6 mb-8">
+            <h2
+              id="question-text"
+              class="text-2xl font-bold text-slate-800 mb-3"
+            ></h2>
+            <p
+              id="question-desc"
+              class="text-base text-slate-600 leading-relaxed px-2"
+            ></p>
+          </div>
+
+          <div class="flex flex-col gap-4 mt-4 mb-6 flex-1">
+            <button
+              onclick="makeChoice('A')"
+              id="btn-choice-a"
+              class="group relative overflow-hidden w-full flex-1 p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all text-center flex flex-col items-center justify-center active:scale-[0.98] shadow-sm hover:shadow-md gap-3"
+            >
+              <div id="choice-a-img-wrap" class="w-full flex-1 rounded-xl bg-slate-100 overflow-hidden shadow-sm border border-slate-200 group-hover:border-slate-300 transition-colors relative hidden">
+                  <img id="choice-a-img" src="" alt="" class="absolute inset-0 w-full h-full object-cover">
+              </div>
+              <div>
+                <p
+                  id="choice-a-text"
+                  class="font-semibold text-slate-800 text-xl group-hover:text-black transition-colors"
+                ></p>
+                <p id="choice-a-cost" class="text-base font-bold mt-1"></p>
+              </div>
+            </button>
+
+            <button
+              onclick="makeChoice('B')"
+              id="btn-choice-b"
+              class="group relative overflow-hidden w-full flex-1 p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all text-center flex flex-col items-center justify-center active:scale-[0.98] shadow-sm hover:shadow-md gap-3"
+            >
+              <div id="choice-b-img-wrap" class="w-full flex-1 rounded-xl bg-slate-100 overflow-hidden shadow-sm border border-slate-200 group-hover:border-slate-300 transition-colors relative hidden">
+                  <img id="choice-b-img" src="" alt="" class="absolute inset-0 w-full h-full object-cover">
+              </div>
+              <div>
+                <p
+                  id="choice-b-text"
+                  class="font-semibold text-slate-800 text-xl group-hover:text-black transition-colors"
+                ></p>
+                <p id="choice-b-cost" class="text-base font-bold mt-1"></p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Crisis Screen -->
+        <div
+          id="screen-crisis"
+          class="hidden flex flex-col items-center justify-center h-full text-center"
+        >
+          <div
+            class="w-24 h-24 bg-red-50 border-4 border-red-100 rounded-full flex items-center justify-center mb-6 animate-pulse"
+          >
+            <i data-lucide="siren" class="w-12 h-12 text-red-500"></i>
+          </div>
+          <h2 class="text-3xl font-bold text-slate-800 mb-4">
+            เหตุการณ์ไม่คาดฝัน!
+          </h2>
+          <div
+            class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm w-full mb-8"
+          >
+            <p
+              id="crisis-desc"
+              class="text-slate-600 mb-6 leading-relaxed text-lg"
+            ></p>
+            <div class="text-4xl font-bold text-red-500" id="crisis-cost"></div>
+          </div>
+          <button
+            onclick="showResults()"
+            class="mt-auto sm:mt-0 w-full py-4 rounded-xl bg-slate-800 text-white font-semibold text-lg hover:bg-slate-700 transition-colors active:scale-[0.98] shadow-lg flex justify-center items-center gap-2"
+          >
+            ดูผลลัพธ์ชีวิต
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Result Screen -->
+        <div
+          id="screen-result"
+          class="hidden flex flex-col items-center h-full text-center overflow-y-auto pb-6"
+        >
+          <div class="mt-6 w-full">
+            <div
+              id="result-icon-container"
+              class="w-24 h-24 rounded-full flex items-center justify-center mb-6 mx-auto bg-slate-100 shadow-inner"
+            >
+              <i
+                id="result-icon"
+                data-lucide="building"
+                class="w-12 h-12 text-slate-800"
+              ></i>
+            </div>
+            <div
+              class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-2"
+            >
+              Final Balance
+            </div>
+            <div
+              id="final-balance"
+              class="text-5xl font-bold text-slate-800 mb-8 tracking-tight"
+            ></div>
+
+            <h3
+              id="result-title"
+              class="text-2xl font-bold text-slate-800 mb-4"
+            ></h3>
+            <p
+              id="result-desc"
+              class="text-slate-600 leading-relaxed mb-10 px-2 text-lg"
+            ></p>
+          </div>
+
+          <div
+            id="final-quote"
+            class="opacity-0 mt-auto w-full p-6 bg-slate-900 rounded-2xl text-left relative overflow-hidden shadow-xl border border-slate-700"
+          >
+            <div class="absolute -right-4 -top-4 opacity-10">
+              <i data-lucide="quote" class="w-32 h-32 text-white"></i>
+            </div>
+            <p
+              class="text-slate-200 text-base italic relative z-10 leading-relaxed font-light mb-4"
+            >
+              "ชีวิตคนเราไม่ได้พังเพราะโชคร้ายเสมอไป... แต่มักพังเพราะเราคิดว่า
+              'เดี๋ยวค่อยเริ่มใหม่ก็ได้' ในวันที่ยังมีทางเลือก"
+            </p>
+            <div
+              class="flex items-center gap-3 relative z-10 border-t border-slate-700 pt-4"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-cyan-900/50 flex items-center justify-center"
+              >
+                <i data-lucide="user" class="w-4 h-4 text-cyan-400"></i>
+              </div>
+              <p class="text-cyan-400 text-sm font-semibold">
+                — บทเรียนจากพี่รปภ. ลานห่าน FIBO
+              </p>
+            </div>
+          </div>
+
+          <button
+            id="btn-restart"
+            onclick="initGame()"
+            class="mt-6 w-full py-4 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-base hover:bg-slate-50 hover:text-slate-800 transition-all hidden active:scale-[0.98] flex items-center justify-center gap-2"
+          >
+            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            เริ่มต้นชีวิตใหม่
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-4 w-full text-center pointer-events-none hidden sm:block">
+      <p class="text-slate-500 text-sm font-medium tracking-wide drop-shadow-sm">
+        web created by <span class="text-cyan-600 font-bold">bomscoob</span>
+      </p>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>
