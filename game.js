@@ -9,32 +9,64 @@ const levels = [
   {
     title: "รางวัลชีวิต",
     desc: "เงินเดือนออกแล้ว! ให้รางวัลตัวเองหน่อยไหมหลังจากทำงานหนักมาทั้งเดือน?",
-    choiceA: { text: "ซื้อ Gadget ใหม่", cost: -8000, imgUrl: "images/gadget.jpg" },
+    choiceA: {
+      text: "ซื้อ Gadget ใหม่",
+      cost: -8000,
+      imgUrl: "images/gadget.jpg",
+    },
     choiceB: { text: "เก็บออมไว้ก่อน", cost: 500, imgUrl: "images/saving.jpg" },
   },
   {
     title: "สังคมเพื่อนฝูง",
     desc: "เพื่อนชวนไปปาร์ตี้ทริปใหญ่สัปดาห์นี้ ปฏิเสธยากซะด้วย",
-    choiceA: { text: "ทริปใหญ่จัดเต็ม", cost: -7000, imgUrl: "images/trip.jpg" },
-    choiceB: { text: "กินข้าวเย็นง่ายๆ พอ", cost: -1500, imgUrl: "images/mama.jpg" },
+    choiceA: {
+      text: "ทริปใหญ่จัดเต็ม",
+      cost: -7000,
+      imgUrl: "images/trip.jpg",
+    },
+    choiceB: {
+      text: "กินข้าวเย็นง่ายๆ พอ",
+      cost: -1500,
+      imgUrl: "images/mama.jpg",
+    },
   },
   {
     title: "การลงทุน",
     desc: "มีกระแสการลงทุนมาแรง เพื่อนแห่ลงกันหมด บอกว่ารวยเร็ว",
-    choiceA: { text: "เสี่ยงสูงตามเพื่อน", cost: -10000, imgUrl: "images/high-risk.jpg" },
-    choiceB: { text: "กระจายความเสี่ยง", cost: -2000, imgUrl: "images/low-risk.jpg" },
+    choiceA: {
+      text: "เสี่ยงสูงตามเพื่อน",
+      cost: -10000,
+      imgUrl: "images/high-risk.jpg",
+    },
+    choiceB: {
+      text: "กระจายความเสี่ยง",
+      cost: -2000,
+      imgUrl: "images/low-risk.jpg",
+    },
   },
   {
     title: "ความสะดวกสบาย",
     desc: "การเดินทางไปทำงานทุกวันเริ่มเหนื่อย อยากได้ความสบายขึ้น",
-    choiceA: { text: "ดาวน์รถ/ซื้อของหรู", cost: -6000, imgUrl: "images/sport-car.jpg" },
-    choiceB: { text: "ใช้ขนส่งสาธารณะ", cost: -1000, imgUrl: "images/public-transport.jpg" },
+    choiceA: {
+      text: "ดาวน์รถ/ซื้อของหรู",
+      cost: -6000,
+      imgUrl: "images/sport-car.jpg",
+    },
+    choiceB: {
+      text: "ใช้ขนส่งสาธารณะ",
+      cost: -1000,
+      imgUrl: "images/public-transport.jpg",
+    },
   },
   {
     title: "ความมั่นคง",
     desc: "เห็นข่าวคนป่วยบ่อยๆ ช่วงนี้ ควรเตรียมพร้อมไหม?",
     choiceA: { text: "ไม่ทำประกัน", cost: 0, imgUrl: "images/im-good.jpg" },
-    choiceB: { text: "ทำประกันสุขภาพ", cost: -4000, imgUrl: "images/health-insurance.jpg" },
+    choiceB: {
+      text: "ทำประกันสุขภาพ",
+      cost: -4000,
+      imgUrl: "images/health-insurance.jpg",
+    },
   },
 ];
 
@@ -103,6 +135,12 @@ function initGame() {
   const quote = document.getElementById("final-quote");
   quote.classList.remove("animate-fade-in");
   quote.classList.add("opacity-0");
+
+  const reflection = document.getElementById("reflection-section");
+  if (reflection) {
+    reflection.classList.add("hidden");
+    reflection.classList.remove("animate-fade-in");
+  }
 
   const btnRestart = document.getElementById("btn-restart");
   btnRestart.classList.add("hidden");
@@ -263,13 +301,21 @@ function showResults() {
   lucide.createIcons();
 
   setTimeout(() => {
-    const quote = document.getElementById("final-quote");
-    quote.classList.add("animate-fade-in");
+    const reflection = document.getElementById("reflection-section");
+    if (reflection) {
+      reflection.classList.remove("hidden");
+      reflection.classList.add("animate-fade-in");
+    }
 
     setTimeout(() => {
-      const btnRestart = document.getElementById("btn-restart");
-      btnRestart.classList.remove("hidden");
-      btnRestart.classList.add("animate-fade-in");
-    }, 1500);
-  }, 500);
+      const quote = document.getElementById("final-quote");
+      quote.classList.add("animate-fade-in");
+
+      setTimeout(() => {
+        const btnRestart = document.getElementById("btn-restart");
+        btnRestart.classList.remove("hidden");
+        btnRestart.classList.add("animate-fade-in");
+      }, 1500);
+    }, 1000);
+  }, 200);
 }
